@@ -1,0 +1,30 @@
+Consider the following code which implements element-wise matrix addition.
+
+  public static SparseMatrix<Double> addSlow(SparseMatrix<Double> x, SparseMatrix<Double> y){
+    ... // Error checking code
+    int r = x.rows(), c = x.cols();
+    Double f = x.getFillElem() + y.getFillElem();
+    SparseMatrix<Double> z = new SparseMatrix<Double>(r,c,f);
+    for(int i=0; i<r; i++){
+      for(int j=0; j<c; j++){
+        Double ze = x.get(i,j) + y.get(i,j);
+        if(!z.getFillElem().equals(ze)){
+          z.set(i,j, ze);
+        }
+      }
+    }
+    return z;
+  }
+
+Describe why addSlow(x,y) is inefficient and give an estimate of its
+runtime complexity based on the target complexity of SparseMatrix
+get() and set() methods.
+
+WRITE YOUR ANSWER BELOW USING THE VARIABLES
+- R: Number of rows in matrices x and y
+- C: Number of cols in matrices x and y
+- Ex, Ey: Number of non-fill elements in matrix x and y
+
+addSlow(x,y) is inefficient because it has multiples calls to get in the X and Y matrices and a call to set in the Z matric. everytime get is called, it has to iterate through the nodes to figure out which index it is requested in X and Y. when set is called in Z, it has to iterate through the nodes to find the correct position to place the node in. this is very slow and is redundant because it has to loop from the beginning every time even though it is known where to place the node at within the matrix.
+
+the runtime complexity of addSlow can be given as O(R*C*Ex*Ey) because of the numerous times that the method is iterating through the nodes to find the correct positioning for get and set.
